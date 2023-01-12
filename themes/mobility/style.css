@@ -1,0 +1,15 @@
+/**
+Theme Name: Mobility
+Author: rtCamp
+Author URI: https://rtcamp.com/
+Description: Theme for mobility solutions pages.
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: mobility
+Template: astra
+*/
+/** remove hover link from specific menu items */
+.unclickable > a:hover {
+  cursor: default;
+}
