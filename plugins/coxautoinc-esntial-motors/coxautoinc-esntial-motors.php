@@ -45,7 +45,7 @@ class CoxAutoInc_Esntial_Motors {
 	public function __construct() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ) );
 
-		// add_filter( 'gform_pre_render', array( $this, 'set_form_parameters' ) );
+		add_filter( 'gform_pre_render', array( $this, 'set_form_parameters' ) );
 	}
 
 	/**
@@ -59,9 +59,6 @@ class CoxAutoInc_Esntial_Motors {
 
 		wp_enqueue_script( 'coxautoinc-esntial-motors-js' );
 		wp_enqueue_style( 'coxautoinc-esntial-motors-css' );
-
-		wp_register_script( 'coxautoinc-esntial-motors-split-js', 'https://unpkg.com/split-grid/dist/split-grid.js' );
-		wp_enqueue_script( 'coxautoinc-esntial-motors-split-js' );
 	}
 
 	public function set_form_parameters( $form ) {
