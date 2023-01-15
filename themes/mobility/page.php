@@ -20,10 +20,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 $heading_value = caiem_get_value( 'heading' );
 $description_value = caiem_get_value('description');
 $email_value = caiem_get_value( 'email' );
+$link_label = caiem_get_value('label');
+$link_url = caiem_get_value('url');
 
 if(empty($heading_value)) $heading_value = 'Dummy Heading';
 if(empty($description_value)) $description_value = 'Dummy Description';
 if(empty($email_value)) $email_value = 'dummy@email.com';
+if(empty($link_label)) $link_label = 'Link here';
+if(empty($link_url)) $link_url = '#';
+
 
 
 get_header(); ?>
@@ -55,7 +60,7 @@ get_header(); ?>
 		<div x-data :contenteditable="$store.isEditable ? 'true' : 'false'" class="<?php echo esc_attr( caiem_get_css_classes( 'email' ) ); ?>"  <?php echo caiem_get_attributes( 'email' ); ?> ><?php echo esc_html( $email_value ); ?></div>
 
 		<!-- URL & label -->
-		<div x-data="{label: '<?php echo "hello" ?>', link: 'google.com'}">
+		<div x-data="{label: '<?php echo $link_label; ?>', link: '<?php echo $link_url; ?>'}">
 
 
 			<div>
@@ -78,8 +83,8 @@ get_header(); ?>
 				opacity: 0.75;
 				}
 				.modal {
-				display: flex;
-				visibility: hidden;
+				/* display: flex;
+				visibility: hidden; */
 				align-items: center;
 				justify-content: center;
 				position: fixed;
@@ -118,8 +123,8 @@ get_header(); ?>
 					</div>
 					<!-- content -->
 					<div>
-						<input x-model="label" type="text" placeholder="Enter label" class="<?php echo esc_attr( caiem_get_css_classes( 'label' ) ); ?>" data-gfield="label" />
-						<input x-model="link" type="url" placeholder="Enter URL" class="<?php echo esc_attr( caiem_get_css_classes( 'url' ) ); ?>" data-gfield="url" />
+						<input x-model="label" type="text" placeholder="Enter label" class="link <?php echo esc_attr( caiem_get_css_classes( 'label' ) ); ?>" data-gfield="label" />
+						<input x-model="link" type="url" placeholder="Enter URL" class="link <?php echo esc_attr( caiem_get_css_classes( 'url' ) ); ?>" data-gfield="url" />
 					</div>
 				</div>
 			</div>
@@ -134,7 +139,6 @@ get_header(); ?>
 				<!-- Modal inner -->
 				<div
 					class="max-w-3xl px-6 py-4 mx-auto text-left bg-white rounded shadow-lg"
-					@click.away="showModal = false"
 					x-transition:enter="motion-safe:ease-out duration-300"
 					x-transition:enter-start="opacity-0 scale-90"
 					x-transition:enter-end="opacity-100 scale-100"
