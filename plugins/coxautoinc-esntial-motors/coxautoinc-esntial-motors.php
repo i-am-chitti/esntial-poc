@@ -59,6 +59,14 @@ class CoxAutoInc_Esntial_Motors {
 
 		wp_enqueue_script( 'coxautoinc-esntial-motors-js' );
 		wp_enqueue_style( 'coxautoinc-esntial-motors-css' );
+
+		// wp_enqueue_script( 'coxautoinc-esntial-motors-apline-js', 'https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js' );
+		wp_enqueue_script( 'coxautoinc-esntial-motors-apline-store-js', plugin_dir_url( __FILE__ ) . '/js/store.js', array(), filemtime( plugin_dir_path( __FILE__ ) . '/js/store.js' ) );
+
+		add_action('wp_head', function() {
+			echo '<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>';
+			echo '<script src="https://kit.fontawesome.com/0a424a4cd6.js" crossorigin="anonymous"></script>';
+		});
 	}
 
 	public function set_form_parameters( $form ) {
@@ -83,6 +91,7 @@ class CoxAutoInc_Esntial_Motors {
 
 			$email_field_id         = null;
 			$formatted_entry_fields = array();
+
 			if ( ! empty( $form['fields'] ) ) {
 				foreach ( $form['fields'] as $field ) {
 
@@ -94,15 +103,16 @@ class CoxAutoInc_Esntial_Motors {
 			}
 
 			$search_criteria['field_filters']         = array();
-			$search_criteria['field_filters']['mode'] = 'any';
-			$search_criteria['field_filters'][]       = array(
-				'key'   => $email_field_id,
+			$field_filters[]       = array(
+				'key'   => strval( $email_field_id ),
 				'value' => $retailer,
 			);
-			$search_criteria['field_filters'][]       = array(
+			$field_filters[]       = array(
 				'key'   => 'resume_token',
 				'value' => $resume_token,
 			);
+			$search_criteria['field_filters']['mode'] = 'any';
+			$search_criteria['field_filters'][]=$field_filters;
 
 			$entries = GFAPI::get_entry_ids( $form_id, $search_criteria );
 
@@ -134,7 +144,7 @@ class CoxAutoInc_Esntial_Motors {
 	}
 
 	public function get_field_attributes( $key ) {
-		return 'data-gfield="' . $key . '" contenteditable="true"';
+		return 'data-gfield="' . $key . '"';
 	}
 
 	public function get_field_css_classes( $key = '' ) {

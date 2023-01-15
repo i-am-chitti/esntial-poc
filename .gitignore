@@ -6,6 +6,7 @@ plugins/schema-and-structured-data-for-wp
 plugins/wordpress-seo
 plugins/ground
 plugins/movie-library
+plugins/gravityformspartialentries
 
 themes/astra
 themes/twentytwenty
