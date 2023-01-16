@@ -29,8 +29,13 @@ jQuery( document ).ready(
 			'input',
 			function ( e ) {
 				let gfield = jQuery( this ).data( 'gfield' );
-				jQuery( '.gfield.' + gfield + ' input' ).val( jQuery( this ).text() );
-				jQuery( '.gfield.' + gfield + ' input' ).val( jQuery( this ).val() );
+
+				if(jQuery(this).prop('tagName').toLowerCase() === 'input') {
+					jQuery( '.gfield.' + gfield + ' input' ).val( jQuery( this ).val() );
+				} else {
+					jQuery( '.gfield.' + gfield + ' input' ).val( jQuery( this ).text() );
+				}
+
 				jQuery( '.gfield.' + gfield + ' textarea' ).val( jQuery( this ).text() );
 			}
 		);
