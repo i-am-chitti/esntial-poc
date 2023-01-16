@@ -38,3 +38,24 @@ function caiem_get_css_classes( $key ) {
 	$cai_esntial_motors = CoxAutoInc_Esntial_Motors::get_instance();
 	return $cai_esntial_motors->get_field_css_classes( $key );
 }
+
+add_filter('gform_field_content', function ( $field_content, $field ) {
+    if ( $field->type !== 'fileupload' ) {
+		return str_replace( 'type=', sprintf("x-model='%s' type=", $field->adminLabel), $field_content );
+    }
+    return $field_content;
+}, 10, 2);
+
+// add_filter(
+//     'gform_file_upload_markup',
+//     'gf_test_file_upload_markup',
+//     10,
+//     4
+// );
+
+// function gf_test_file_upload_markup( $file_upload_markup, $file_info, $form_id, $id ) {
+//     $file_upload_markup .= '<div class="gf-test">GF Test</div>';
+//     $file_upload_markup .= '<img width="20px" height="20px" src=" ' . RGFormsModel::get_upload_url( $form_id ) . '/tmp/' . $file_info['temp_filename'] . ' " />';
+
+//     return $file_upload_markup;
+// }

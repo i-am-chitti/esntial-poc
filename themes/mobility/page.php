@@ -17,19 +17,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-$heading_value = caiem_get_value( 'heading' );
-$description_value = caiem_get_value('description');
-$email_value = caiem_get_value( 'email' );
-$link_label = caiem_get_value('label');
-$link_url = caiem_get_value('url');
-
-if(empty($heading_value)) $heading_value = 'Dummy Heading';
-if(empty($description_value)) $description_value = 'Dummy Description';
-if(empty($email_value)) $email_value = 'dummy@email.com';
-if(empty($link_label)) $link_label = 'Link here';
-if(empty($link_url)) $link_url = '#';
-
-
+$file_content = json_decode( file_get_contents( untrailingslashit( get_stylesheet_directory() ) . '/json/home.json' ), true );
+foreach ( $file_content as $key => $value ) {
+	$val = caiem_get_value( $key );
+	if ( ! empty( $val ) ) {
+		$file_content[ $key ] = $val;
+	}
+}
 
 get_header(); ?>
 
@@ -40,31 +34,31 @@ get_header(); ?>
 <?php endif ?>
 
 	<div id="primary" <?php astra_primary_class(); ?>
-	x-data="{ showModal: false }"
-  	@keydown.escape="showModal = false"
+	x-data='<?php echo wp_json_encode( (object) $file_content ); ?>'
+	  @keydown.escape="showModal = false"
 	>
 
 		<?php astra_primary_content_top(); ?>
 
 		<!-- <button class="gf-live-preview save-changes">Save Changes</button>
 		<button class="gf-live-preview preview-changes">Preview changes</button> -->
-		<button x-data @click="$store.isEditable = ! $store.isEditable">Toggle Preview</button>
+		<button @click="$store.isEditable = ! $store.isEditable">Toggle Preview</button>
 
 		<!-- Heading -->
-		<h1 x-data :contenteditable="$store.isEditable ? 'true' : 'false'" class="<?php echo esc_attr( caiem_get_css_classes( 'heading' ) ); ?>"  <?php echo caiem_get_attributes( 'heading' ); ?> ><?php echo esc_html( $heading_value ); ?></h1>
+		<h1 :contenteditable="$store.isEditable ? 'true' : 'false'" class="<?php echo esc_attr( caiem_get_css_classes( 'heading' ) ); ?>"  <?php echo caiem_get_attributes( 'heading' ); ?> x-text="heading" ></h1>
 
 		<!-- Description -->
-		<div x-data :contenteditable="$store.isEditable ? 'true' : 'false'" class="<?php echo esc_attr( caiem_get_css_classes( 'description' ) ); ?>"  <?php echo caiem_get_attributes( 'description' ); ?> ><?php echo esc_html( $description_value ); ?></div>
+		<div :contenteditable="$store.isEditable ? 'true' : 'false'" class="<?php echo esc_attr( caiem_get_css_classes( 'description' ) ); ?>"  <?php echo caiem_get_attributes( 'description' ); ?> x-text="description"></div>
 
 		<!-- Email -->
-		<div x-data :contenteditable="$store.isEditable ? 'true' : 'false'" class="<?php echo esc_attr( caiem_get_css_classes( 'email' ) ); ?>"  <?php echo caiem_get_attributes( 'email' ); ?> ><?php echo esc_html( $email_value ); ?></div>
+		<div :contenteditable="$store.isEditable ? 'true' : 'false'" class="<?php echo esc_attr( caiem_get_css_classes( 'email' ) ); ?>"  <?php echo caiem_get_attributes( 'email' ); ?> x-text="email" ></div>
 
 		<!-- URL & label -->
-		<div x-data="{label: '<?php echo $link_label; ?>', link: '<?php echo $link_url; ?>'}">
+		<div x-data="{showModal: false}">
 
 
 			<div>
-				<a :href="link" x-text="label"></a>
+				<a :href="url" x-text="label"></a>
 				<button x-show="$store.isEditable" @click="showModal=true"><i class="fa-solid fa-pen-to-square"></i></button>
 			</div>
 
@@ -124,7 +118,7 @@ get_header(); ?>
 					<!-- content -->
 					<div>
 						<input x-model="label" type="text" placeholder="Enter label" class="link <?php echo esc_attr( caiem_get_css_classes( 'label' ) ); ?>" data-gfield="label" />
-						<input x-model="link" type="url" placeholder="Enter URL" class="link <?php echo esc_attr( caiem_get_css_classes( 'url' ) ); ?>" data-gfield="url" />
+						<input x-model="url" type="url" placeholder="Enter URL" class="link <?php echo esc_attr( caiem_get_css_classes( 'url' ) ); ?>" data-gfield="url" />
 					</div>
 				</div>
 			</div>
@@ -151,20 +145,14 @@ get_header(); ?>
 					<!-- content -->
 					<div>
 						<input x-model="label" type="text" placeholder="Enter label" class="<?php echo esc_attr( caiem_get_css_classes( 'label' ) ); ?>" data-gfield="label" />
-						<input x-model="link" type="url" placeholder="Enter URL" class="<?php echo esc_attr( caiem_get_css_classes( 'url' ) ); ?>" data-gfield="url" />
+						<input x-model="url" type="url" placeholder="Enter URL" class="<?php echo esc_attr( caiem_get_css_classes( 'url' ) ); ?>" data-gfield="url" />
 					</div>
 				</div>
 			</div>
 		</div>
 
 		<!-- Single Image -->
-		<?php
-			$imgVal = caiem_get_value( 'images' );
-			if (! $imgVal) {
-				$imgVal = 'https://via.placeholder.com/428x274';
-			}
-		?>
-		<img id="header-hero-img" class="<?php echo esc_attr( caiem_get_css_classes( 'images' ) ); ?>" <?php echo caiem_get_attributes( 'images' ); ?> src="<?php echo esc_url($imgVal); ?>" />
+		<img id="header-hero-img" class="<?php echo esc_attr( caiem_get_css_classes( 'images' ) ); ?>" <?php echo caiem_get_attributes( 'images' ); ?> :src="images" />
 
 		<?php astra_content_page_loop(); ?>
 
